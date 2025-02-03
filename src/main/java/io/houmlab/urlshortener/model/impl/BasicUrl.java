@@ -17,7 +17,7 @@ public class BasicUrl implements Url {
 
     @NotBlank(message = "Destination must not be empty or null")
     @Pattern(regexp = "^(https?):\\/\\/([\\w\\-\\.]+)+(:\\d+)?(\\/[\\w\\-\\.]*)*(\\?[\\w\\-&=]*)?(#[\\w\\-]*)?$", message = "Destination must be a valid URL")
-    @Schema(description = "The destination URL to be resolved", example = "https://www.houmlab.io", required = true)
+    @Schema(description = "The destination URL to be resolved", example = "https://juantoledo.dev", required = true)
     private String destination;
 
     @Schema(description = "Flag for whether the URL is currently enabled", example = "true")

@@ -1,79 +1,74 @@
 # Houmlab URL Shortener
 
-Didáctico y selfhosted acortador de urls escrito en Java / Spring MVC. Es un ejercicio que sirve para demostrar algunos conceptos base de desarrollo: 
+Educational and self-hosted URL shortener written in Java / Spring MVC. This project serves as an exercise to demonstrate some fundamental development concepts:
 
 ### Dev Containers
 
-Este proyecto puede ser levantado fácilmente usando la definición de [Dev Containers](https://containers.dev/). 
-
+This project can be easily deployed using the [Dev Containers](https://containers.dev/) definition.
 
 ### Golden Signals
 
-Considerados los indicadores más importantes de la salud de un servicio: 
+The most important indicators of a service's health:
 
+- **Latency**: The time it takes to process a request. It is important to distinguish between the latency of successful requests and the latency of failed requests.
 
-- **Latencia**: El tiempo que tarda en atenderse una solicitud. Es importante distinguir entre la latencia de las solicitudes exitosas y la latencia de las solicitudes fallidas.
+- **Traffic**: The demand placed on your system, often measured in requests per second.
 
-- **Tráfico**: La demanda que se está colocando en tu sistema, a menudo medida en solicitudes por segundo.
+- **Errors**: The rate of failed requests. These failures could be due to the system (e.g., a 500 Internal Server Error), the client (e.g., a 400 Bad Request), or an explicit error (e.g., "Could not connect to the database").
 
-- **Errores**: La tasa de solicitudes fallidas. Esto podría deberse al sistema (por ejemplo, un Error interno del servidor 500), al cliente (por ejemplo, una Solicitud incorrecta 400), o podría ser un error explícito (por ejemplo, "No se pudo conectar a la base de datos").
-
-- **Saturación**: Qué tan "lleno" está tu servicio. Una medida de la utilización del sistema. Si el sistema está al 100% de utilización, está saturado.
-
+- **Saturation**: How "full" your service is. This is a measure of system utilization. If the system is at 100% utilization, it is saturated.
 
 https://sre.google/sre-book/monitoring-distributed-systems/#xref_monitoring_golden-signals
 
-Este proyecto incluye toda la configuración necesaria para exportar sus métricas de uso a un servidor de Prometheus. Métricas que luego son consumidas por Grafana.
+This project includes all the necessary configurations to export its usage metrics to a Prometheus server. These metrics are then consumed by Grafana.
 
 ### OpenAPI
 
-OpenAPI es una especificación que permite describir las capacidades de un servicio de manera estándar. Se incluyen algunas anotaciones para demostrar el uso de esta spec.
+OpenAPI is a specification that allows describing a service’s capabilities in a standardized way. Some annotations are included to demonstrate the use of this spec.
 
 ### Docker Compose
 
-Se incluye un stack que se crea al momento de levantar el proyecto con Dev Containers. Este stack contiene todo lo necesario para el desarrollo y uso de este servicio a nivel local; MongoDB, Redis, Grafana y Prometheus.
+A stack is included, which is created when launching the project with Dev Containers. This stack contains everything necessary for developing and using this service locally, including MongoDB, Redis, Grafana, and Prometheus.
 
-# Uso 
+# Usage
 
-Se incluye la definición de Dev Containers que levanta el entorno de desarrollo, MongoDB para el storage, Redis para la caché, Grafana y Prometheus para visualizar estadísticas si se quisiera. 
+The project includes a Dev Containers definition that sets up the development environment, MongoDB for storage, Redis for caching, and Grafana and Prometheus for visualization if needed.
 
-### Software necesario en la máquina local con Dev Containers
+### Required Software on the Local Machine with Dev Containers
 
-- [Docker ](https://www.docker.com/products/docker-desktop/)
+- [Docker](https://www.docker.com/products/docker-desktop/)
 
-- [Visual Studio Code (se recomienda porque es seamless con Dev Containers)](https://code.visualstudio.com/)
+- [Visual Studio Code (recommended for seamless Dev Containers integration)](https://code.visualstudio.com/)
 
-- [Extensión de Dev Containers para VSCode](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [Dev Containers Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
+Once these components are installed on the local machine, simply open the project directory. VSCode will automatically detect the presence of the `.devcontainer` directory and suggest opening the repository and infrastructure in an isolated container.
 
-Luego de instalar estos components la máquina local. Sólo basta abrir el directorio del proyecto. VSCode detectará automáticamente la presencia del directorio .devcontainer y sugerirá abrir el repositorio y la infra en un contenedor independiente. **Se incluye un archivo launch.json que dice a VScode cómo iniciar la app, ya con los parámetros locales listos para el bootstrap de Spring** :
+**A `launch.json` file is included, which instructs VSCode on how to start the app, already configured with the local parameters required for Spring's bootstrap:**
 
 ![](docs/launch.png)
 
+You only need to call the various API operations defined in SwaggerUI.
 
-Sólo basta con llamar a las distintas operaciones de la API definidas en el SwaggerUI.
+## Endpoints
 
-## Endpoints 
+### OpenAPI Definition (Swagger UI)
 
-### Definición de OpenAPI (Swagger UI)
+Contains the API definition with its operations in a SwaggerUI instance.
 
-Contiene la definición de la API con sus operaciones en una instancia de SwaggerUI.
-
-http://localhost:8080/swagger-ui/index.html 
+http://localhost:8080/swagger-ui/index.html  
 
 ![](/docs/openapi.png)
 
-### Métricas
-
+### Metrics
 
 #### Prometheus Exporter
 
-Las métricas se exportan en el siguiente endpoint:
+Metrics are exported at the following endpoint:
 
+http://localhost:8080/actuator/prometheus  
 
-http://localhost:8080/actuator/prometheus
-
-Métricas actualmente exportadas:
+Currently exported metrics:
 
 ```
 management.endpoints.web.exposure.include=health,info,prometheus
@@ -83,7 +78,8 @@ management.metrics.web.server.auto-time-requests=true
 management.metrics.enable.logback=true
 ```
 
-La configuración anterior permite obtener métricas como tiempos de respuesta, accesos y código de respuestas, cantidad de ERROR logs. Además de todas las métricas de la máquina CPU, memoria, etc. 
+
+The above configuration allows collecting metrics such as response times, access logs, response codes, and error logs, in addition to all system metrics (CPU, memory, etc.).
 
 #### Prometheus Server
 
@@ -95,8 +91,8 @@ http://localhost:9090/
 
 http://localhost:3000/
 
-#### Dashboard de Golden Signals
+#### Golden Signals Dashboard
 
-Se incluye como parte de este proyecto un diagrama que puede ser enriquecido y enfocado a necesidades específicas. Sólo se debe descargar [el archivo que se incluye en este repositorio](/telemetry/houmlab-golden-signals-dashboard.json) e importar dentro de grafana. 
+This project includes a predefined dashboard that can be enriched and adapted to specific needs. Simply download [the file included in this repository](/telemetry/houmlab-golden-signals-dashboard.json) and import it into Grafana.
 
 ![dashboard](docs/grafana.png)

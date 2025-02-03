@@ -9,12 +9,25 @@
 	"workspaceFolder": "/workspace",
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
-			"version": "none",
+			"version": "21",
 			"installMaven": "true",
 			"installGradle": "false"
 		},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
-	}
+	},
+    "containerEnv": {
+        "MONGO_CONNECTION_STRING": "mongodb://mongo:27017/test",
+        "REDIS_DATABASE": "0",
+        "REDIS_HOST": "redis",
+        "REDIS_PORT": "6379"
+    },
+	"customizations": {
+        "vscode": {
+            "extensions": [
+                "GitHub.copilot"
+            ]
+        }
+    }
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
